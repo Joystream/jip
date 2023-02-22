@@ -194,7 +194,7 @@ Here the structure of the document is described.
 
 The following describes the JIP process in terms of the life-cycle of an individual JIP proposal. For each stage of the process, a high level semantic meaning is described, along with explicit set of changes which can occur, and under what conditions. Most of what is described applies to both community and council proposal types, as their processes have very similar state transitions, however transitions and states unique to only one are also clearly identified. The following state machine diagram is a useful reference for succinctly summarizing the main points. Note that an arrow represents an event which can take place in the stage or group of stages from which it emanates.
 
-<img src="process.svg"/>
+<img src="process.png"/>
 
 ### `Idea`
 
