@@ -1,0 +1,25 @@
+:root {
+  --max-width-lg: 1200px;
+  --max-width-md: 800px;
+
+  /* colors */
+  --color-grey: #dee3e9;
+  --color-grayc-chateau: #a7aeb7;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}

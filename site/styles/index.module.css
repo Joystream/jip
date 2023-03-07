@@ -1,0 +1,30 @@
+.landing {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  max-width: var(--max-width-lg);
+  margin: 0 auto;
+  padding-top: 32px;
+}
+
+.jips {
+  display: flex;
+  flex-direction: column;
+}
+
+.jip {
+  display: flex;
+  flex-direction: column;
+}
+
+.jipTitle {
+  font-family: var(--font-primary);
+  font-size: 24px;
+}
+
+.date {
+  margin-top: 4px;
+  font-family: var(--font-secondary);
+  font-size: 16px;
+  color: var(--color-grayc-chateau);
+}
