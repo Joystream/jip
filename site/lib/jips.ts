@@ -1,14 +1,14 @@
 import fs from "fs";
 import path from "path";
-import matter from "gray-matter";
 import { remark } from "remark";
 import html from "remark-html";
-import { createTOCFromHTML, integrateTOCLinksIntoHtml } from "@/lib/toc";
+import { createTOCFromHTML, integrateTOCLinksIntoHtml } from "./toc";
+import { parsePreamble } from "./preamble";
 
 export type JipId = `jip-${number}`;
 
 export type JipPreamble = {
-  jip: number;
+  jip: string;
   title: string;
   authors: string;
   owners?: string;
@@ -16,9 +16,9 @@ export type JipPreamble = {
   category: "Hard-fork" | "Recovery" | "Meta" | "Informational" | "Standard";
   domains?: "string";
   description: string;
-  "forum-thread": string;
+  forumThread: string;
   stage: "Draft" | "Review" | "Living" | "Stagnant" | "Last Call" | "Withdrawn" | "Enactable" | "Final" | "Rejected" | "Enacted";
-  "last-call-deadline": "string";
+  lastCallDeadline: "string";
   created: string;
   requires?: string;
   proposals?: string
@@ -49,13 +49,12 @@ const getAllJipIDs = () => {
 
 const getJipData = async (jipId: JipId) => {
   const fileContents = fs.readFileSync(getJIPDirectory(jipId), "utf8");
-  const matterResult = matter(fileContents, {
-    delimiters: ["<pre>", "</pre>"]
-  });
+
+  const { preamble, content } = parsePreamble(fileContents, { delimiters: ["<pre>" , "</pre>"]})
 
   const contentHtml = (await remark()
     .use(html, { sanitize: true })
-    .process(matterResult.content)).toString();
+    .process(content)).toString();
   
   const toc = createTOCFromHTML(contentHtml);
   const htmlWithTOCLinks = integrateTOCLinksIntoHtml(contentHtml);
@@ -63,7 +62,7 @@ const getJipData = async (jipId: JipId) => {
   return {
     jipId,
     contentHtml: htmlWithTOCLinks,
-    preamble: matterResult.data as JipPreamble,
+    preamble: preamble as JipPreamble,
     toc: toc
   }
 }
@@ -73,11 +72,11 @@ const getAllJipsPreambleData = () => {
 
   const allPostsData = allJipIds.map((jipId) => {
     const fileContents = fs.readFileSync(getJIPDirectory(jipId), 'utf8');
-    const matterResult = matter(fileContents, { delimiters: ["<pre>", "</pre>"]});
+    const { preamble } = parsePreamble(fileContents, { delimiters: ["<pre>", "</pre>"]});
 
     return {
       jipId,
-      preamble: matterResult.data as JipPreamble,
+      preamble: preamble as JipPreamble,
     };
   });
 
