@@ -1,4 +1,3 @@
-import { useReducer } from "react";
 import { JipPreamble } from "./jips";
 
 const JOYSTREAM_USER_REGEX = /\[!member\]\(([0-9]+)\)/g;
