@@ -4,6 +4,7 @@ import { remark } from "remark";
 import html from "remark-html";
 import { createTOCFromHTML, integrateTOCLinksIntoHtml } from "./toc";
 import { parsePreamble } from "./preamble";
+import { integrateJoystreamLinksIntoHtml } from "./joystream";
 
 export type JipId = `jip-${number}`;
 
@@ -41,7 +42,7 @@ export type JipData = {
   toc: { [key: string]: Array<string> };
 };
 
-const JIP_FOLDER_IDENTIFIER = "jip-";
+export const JIP_FOLDER_IDENTIFIER = "jip-";
 
 const getJIPDirectory = (jipId: JipId) => path.join(process.cwd(), `../${jipId}/jip.md`);
 
@@ -63,10 +64,11 @@ const getJipData = async (jipId: JipId) => {
 
   const toc = createTOCFromHTML(contentHtml);
   const htmlWithTOCLinks = integrateTOCLinksIntoHtml(contentHtml);
+  const finalHtml = integrateJoystreamLinksIntoHtml(htmlWithTOCLinks);
 
   return {
     jipId,
-    contentHtml: htmlWithTOCLinks,
+    contentHtml: finalHtml,
     preamble: preamble as JipPreamble,
     toc: toc
   };
@@ -77,7 +79,9 @@ const getAllJipsPreambleData = () => {
 
   const allPostsData = allJipIds.map(jipId => {
     const fileContents = fs.readFileSync(getJIPDirectory(jipId), "utf8");
-    const { preamble } = parsePreamble(fileContents, { delimiters: ["<pre>", "</pre>"] });
+    const { preamble } = parsePreamble(fileContents, { delimiters: ["<pre>", "</pre>"] }) as {
+      preamble: JipPreamble;
+    };
 
     return {
       jipId,

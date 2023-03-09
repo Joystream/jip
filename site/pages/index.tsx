@@ -5,34 +5,54 @@ import { parseISO, format } from "date-fns";
 import { GetStaticProps } from "next";
 
 import { getAllJipsPreambleData, JipId, JipPreamble } from "@/lib/jips";
+import { getAuthorsFromPreamble } from "@/lib/joystream";
 
 import styles from "@/styles/index.module.css";
 
 export const getStaticProps: GetStaticProps = async () => {
   const jipsPreambleData = getAllJipsPreambleData();
 
-  return {
-    props: {
-      jipsPreambleData: JSON.parse(JSON.stringify(jipsPreambleData))
-    }
-  };
+  const authors = await getAuthorsFromPreamble(jipsPreambleData[0].preamble);
+
+  const props = JSON.parse(
+    JSON.stringify({
+      jipsPreambleData,
+      authors
+    })
+  );
+
+  return { props };
 };
 
-const JipItem = ({ jipId, title, date }: { jipId: JipId; title: string; date: string }) => (
+const JipItem = ({
+  jipId,
+  title,
+  date,
+  stage,
+  authors
+}: {
+  jipId: JipId;
+  title: string;
+  date: string;
+  stage: string;
+  authors: string[];
+}) => (
   <div className={styles.jip}>
     <Link className={styles.jipTitle} href={`/${jipId}`}>
-      {title}
+      {jipId}: {title}
     </Link>
     <time className={styles.date} dateTime={date}>
-      {format(parseISO(date), "LLLL d, yyyy")}
+      {format(parseISO(date), "LLLL d, yyyy")} ~ Stage: {stage} ~ Authors: {authors.join(", ")}
     </time>
   </div>
 );
 
 export default function Home({
-  jipsPreambleData
+  jipsPreambleData,
+  authors
 }: {
   jipsPreambleData: Array<{ jipId: JipId; preamble: JipPreamble }>;
+  authors: string[];
 }) {
   return (
     <Layout>
@@ -46,8 +66,15 @@ export default function Home({
       </Head>
       <section className={styles.landing}>
         <div className={styles.jips}>
-          {jipsPreambleData.map(({ jipId, preamble: { created: date, title } }) => (
-            <JipItem key={jipId} jipId={jipId} date={date} title={title} />
+          {jipsPreambleData.map(({ jipId, preamble: { created: date, title, stage } }) => (
+            <JipItem
+              key={jipId}
+              jipId={jipId}
+              date={date}
+              title={title}
+              stage={stage}
+              authors={authors}
+            />
           ))}
         </div>
       </section>
