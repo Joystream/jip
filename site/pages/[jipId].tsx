@@ -51,7 +51,7 @@ const TOC = ({ toc }: { toc: { [key: string]: Array<string> } }) => {
   );
 };
 
-export default function JipId({ jipData }: { jipData: JipData }) {
+export default function JipIdComponent({ jipData }: { jipData: JipData }) {
   const { preamble, contentHtml, toc } = jipData;
 
   return (
