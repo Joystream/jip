@@ -1,10 +1,10 @@
-import Head from 'next/head';
-import React from 'react';
-import Link from 'next/link';
+import Head from "next/head";
+import React from "react";
+import Link from "next/link";
 
-import styles from '@/styles/layout.module.css';
+import styles from "@/styles/layout.module.css";
 
-export default function Layout({ children } : { children: React.ReactNode }) {
+export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div className={styles.container}>
       <Head>
@@ -12,7 +12,9 @@ export default function Layout({ children } : { children: React.ReactNode }) {
         <meta name="og:title" content="Joystream Improvement Proposal Portal" />
       </Head>
       <header className={styles.header}>
-        <Link href="/" className={styles.heading}>Joystream Improvement Proposal Portal</Link>
+        <Link href="/" className={styles.heading}>
+          Joystream Improvement Proposal Portal
+        </Link>
       </header>
       <main>{children}</main>
     </div>

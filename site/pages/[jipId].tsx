@@ -70,10 +70,7 @@ export default function JipId({ jipData }: { jipData: JipData }) {
           <h1 className={styles.tocHeading}>Table of Contents</h1>
           <TOC toc={toc} />
         </div>
-        <div
-          className={styles.content}
-          dangerouslySetInnerHTML={{ __html: contentHtml }}
-        />
+        <div className={styles.content} dangerouslySetInnerHTML={{ __html: contentHtml }} />
       </section>
     </Layout>
   );

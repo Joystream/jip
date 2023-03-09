@@ -17,45 +17,50 @@ export type JipPreamble = {
   domains?: "string";
   description: string;
   forumThread: string;
-  stage: "Draft" | "Review" | "Living" | "Stagnant" | "Last Call" | "Withdrawn" | "Enactable" | "Final" | "Rejected" | "Enacted";
+  stage:
+    | "Draft"
+    | "Review"
+    | "Living"
+    | "Stagnant"
+    | "Last Call"
+    | "Withdrawn"
+    | "Enactable"
+    | "Final"
+    | "Rejected"
+    | "Enacted";
   lastCallDeadline: "string";
   created: string;
   requires?: string;
-  proposals?: string
-}
+  proposals?: string;
+};
 
 export type JipData = {
   jipId: JipId;
   contentHtml: string;
   preamble: JipPreamble;
-  toc: { [key : string] : Array<string> }
-}
+  toc: { [key: string]: Array<string> };
+};
 
 const JIP_FOLDER_IDENTIFIER = "jip-";
 
-const getJIPDirectory = (jipId: JipId) =>
-  path.join(process.cwd(), `../${jipId}/jip.md`);
+const getJIPDirectory = (jipId: JipId) => path.join(process.cwd(), `../${jipId}/jip.md`);
 
 const getAllJipIDs = () => {
   const rootFolder = path.join(process.cwd(), "..");
   const rootFolderJIPs = fs
     .readdirSync(rootFolder)
-    .filter(itemName =>
-      itemName.includes(JIP_FOLDER_IDENTIFIER)
-    ) as Array<JipId>;
+    .filter(itemName => itemName.includes(JIP_FOLDER_IDENTIFIER)) as Array<JipId>;
 
   return rootFolderJIPs;
-}
+};
 
 const getJipData = async (jipId: JipId) => {
   const fileContents = fs.readFileSync(getJIPDirectory(jipId), "utf8");
 
-  const { preamble, content } = parsePreamble(fileContents, { delimiters: ["<pre>" , "</pre>"]})
+  const { preamble, content } = parsePreamble(fileContents, { delimiters: ["<pre>", "</pre>"] });
 
-  const contentHtml = (await remark()
-    .use(html, { sanitize: true })
-    .process(content)).toString();
-  
+  const contentHtml = (await remark().use(html, { sanitize: true }).process(content)).toString();
+
   const toc = createTOCFromHTML(contentHtml);
   const htmlWithTOCLinks = integrateTOCLinksIntoHtml(contentHtml);
 
@@ -64,23 +69,23 @@ const getJipData = async (jipId: JipId) => {
     contentHtml: htmlWithTOCLinks,
     preamble: preamble as JipPreamble,
     toc: toc
-  }
-}
+  };
+};
 
 const getAllJipsPreambleData = () => {
   const allJipIds = getAllJipIDs();
 
-  const allPostsData = allJipIds.map((jipId) => {
-    const fileContents = fs.readFileSync(getJIPDirectory(jipId), 'utf8');
-    const { preamble } = parsePreamble(fileContents, { delimiters: ["<pre>", "</pre>"]});
+  const allPostsData = allJipIds.map(jipId => {
+    const fileContents = fs.readFileSync(getJIPDirectory(jipId), "utf8");
+    const { preamble } = parsePreamble(fileContents, { delimiters: ["<pre>", "</pre>"] });
 
     return {
       jipId,
-      preamble: preamble as JipPreamble,
+      preamble: preamble as JipPreamble
     };
   });
 
   return allPostsData;
-}
+};
 
-export { getAllJipIDs, getJipData, getAllJipsPreambleData } 
+export { getAllJipIDs, getJipData, getAllJipsPreambleData };

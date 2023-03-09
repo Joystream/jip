@@ -1,6 +1,7 @@
-const kebabCaseToCamelCase = (kebabCaseString: string) => kebabCaseString.replace(/-./g, (x: string) => x[1].toUpperCase());
+const kebabCaseToCamelCase = (kebabCaseString: string) =>
+  kebabCaseString.replace(/-./g, (x: string) => x[1].toUpperCase());
 
-export const parsePreamble = (file: string, { delimiters } : { delimiters: [string, string]}) => {
+export const parsePreamble = (file: string, { delimiters }: { delimiters: [string, string] }) => {
   const fileLines = file.split("\n");
 
   const indexOfFirstDelimiter = fileLines.indexOf(delimiters[0]);
@@ -20,5 +21,5 @@ export const parsePreamble = (file: string, { delimiters } : { delimiters: [stri
   return {
     preamble,
     content
-  }
+  };
 };
