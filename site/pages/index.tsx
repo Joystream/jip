@@ -4,7 +4,7 @@ import Link from "next/link";
 import { parseISO, format } from "date-fns";
 import { GetStaticProps } from "next";
 
-import { getAllJipsPreambleData, JipId, JipPreamble } from "@/lib/jips";
+import { BaseJipData, getAllJipsPreambleData, JipId } from "@/lib/jips";
 import { getAuthorsFromPreamble } from "@/lib/joystream";
 
 import styles from "@/styles/index.module.css";
@@ -51,7 +51,7 @@ export default function Home({
   jipsPreambleData,
   authors
 }: {
-  jipsPreambleData: Array<{ jipId: JipId; preamble: JipPreamble }>;
+  jipsPreambleData: Array<BaseJipData>;
   authors: string[];
 }) {
   return (

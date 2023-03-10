@@ -80,8 +80,8 @@ export const getAuthorsFromPreamble = async (preamble: JipPreamble) => {
 
 export const integrateJoystreamLinksIntoMarkdown = (markdown: string) => {
   // This matches the form of joystream-related links (defined in the documentation), extracts the
-  // necessary id (multiple if necessary) and inserts them into a link which is the further integrated
-  // into the markdown itself.
+  // necessary id (multiple if necessary ~ this corresponds to the $1 and $2 values) and inserts
+  // them into a link which is the further integrated into the markdown itself.
 
   return markdown
     .replace(JOYSTREAM_PROPOSAL_REGEX, MARKDOWN_LINK_STRING(PIONEER_PROPOSAL_LINK("$1"), "$1"))

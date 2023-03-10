@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 import { remark } from "remark";
 import html from "remark-html";
-import { createTOCFromHTML, integrateTOCLinksIntoHtml } from "./toc";
+import { createTOCFromHTML, integrateTOCLinksIntoHtml, TOCItems } from "./toc";
 import { parsePreamble } from "./preamble";
 import { integrateJoystreamLinksIntoMarkdown } from "./joystream";
 import { JipPreamble } from "./validation";
@@ -10,11 +10,10 @@ import { JipPreamble } from "./validation";
 export const JIP_FOLDER_IDENTIFIER = "jip-";
 export type JipId = `${typeof JIP_FOLDER_IDENTIFIER}${number}`;
 
-export type JipData = {
-  jipId: JipId;
+export type BaseJipData = { jipId: JipId; preamble: JipPreamble };
+export type JipData = BaseJipData & {
   contentHtml: string;
-  preamble: JipPreamble;
-  toc: { [key: string]: Array<string> };
+  toc: TOCItems;
 };
 
 const getJIPDirectory = (jipId: JipId) => path.join(process.cwd(), `../${jipId}/jip.md`);

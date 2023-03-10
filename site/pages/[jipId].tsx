@@ -8,6 +8,7 @@ import Link from "next/link";
 import { getAllJipIDs, getJipData, JipData, JipId } from "@/lib/jips";
 
 import styles from "@/styles/jip.module.css";
+import { BaseTocItem } from "@/lib/toc";
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const jipIds = getAllJipIDs();
@@ -30,23 +31,21 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   };
 };
 
-const TOC = ({ toc }: { toc: { [key: string]: Array<string> } }) => {
+const TocItem = ({
+  children,
+  link,
+  content
+}: {
+  children?: Array<BaseTocItem>;
+} & BaseTocItem) => {
   return (
     <ul>
-      {Object.keys(toc).map(heading1 => (
-        <li key={heading1}>
-          <Link href={`#${heading1}`}>{heading1}</Link>
-          {toc[heading1].length > 0 ? (
-            <ul>
-              {toc[heading1].map(heading2 => (
-                <li key={heading2}>
-                  <Link href={`#${heading2}`}>{heading2}</Link>
-                </li>
-              ))}
-            </ul>
-          ) : null}
-        </li>
-      ))}
+      <li>
+        <Link href={`#${link}`}>{content}</Link>
+        {children && children.length > 0
+          ? children.map(item => <TocItem key={item.link} {...item} />)
+          : null}
+      </li>
     </ul>
   );
 };
@@ -68,7 +67,11 @@ export default function JipIdComponent({ jipData }: { jipData: JipData }) {
         </header>
         <div className={styles.toc}>
           <h1 className={styles.tocHeading}>Table of Contents</h1>
-          <TOC toc={toc} />
+          {toc.map(({ children, content, link }) => (
+            <TocItem key={link} content={content} link={link}>
+              {children}
+            </TocItem>
+          ))}
         </div>
         <div className={styles.content} dangerouslySetInnerHTML={{ __html: contentHtml }} />
       </section>
