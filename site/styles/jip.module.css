@@ -64,13 +64,21 @@
   font-size: 20px;
 }
 
-.content p, .content li, .content ul, .toc li {
+.content p, .content li, .content ul, .content a, .toc li {
   font-family: var(--font-secondary);
   font-size: 18px;
 }
 
 .content p {
   margin-top: 16px;
+}
+
+.content a, .toc a {
+  color: var(--color-blue-ribbon);
+}
+
+.content a:hover, .toc a:hover {
+  text-decoration: underline;
 }
 
 .content ul, .content ol, .toc ul {

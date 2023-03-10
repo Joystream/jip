@@ -1,3 +1,5 @@
+import { validatePreamble } from "./validation";
+
 const kebabCaseToCamelCase = (kebabCaseString: string) =>
   kebabCaseString.replace(/-./g, (x: string) => x[1].toUpperCase());
 
@@ -18,8 +20,10 @@ export const parsePreamble = (file: string, { delimiters }: { delimiters: [strin
     return prev;
   }, {});
 
+  const preamble = validatePreamble(unvalidatedPreamble);
+
   return {
-    unvalidatedPreamble,
+    preamble,
     content
   };
 };
