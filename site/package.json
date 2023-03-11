@@ -9,7 +9,9 @@
     "lint": "next lint",
     "stylelint": "stylelint \"**/*.{css,module.css}\"",
     "stylelint:fix": "stylelint --fix \"**/*.{css,module.css}\"",
-    "lint:all": "next lint && yarn stylelint"
+    "lint:all": "yarn lint; yarn stylelint",
+    "test": "vitest run",
+    "checks:all": "yarn lint:all; yarn test"
   },
   "dependencies": {
     "@types/node": "18.14.6",
@@ -26,10 +28,14 @@
     "zod": "^3.21.4"
   },
   "devDependencies": {
+    "@testing-library/react": "^14.0.0",
+    "@vitejs/plugin-react": "^3.1.0",
     "eslint": "8.35.0",
     "eslint-config-next": "13.2.3",
+    "jsdom": "^21.1.0",
     "stylelint": "^15.2.0",
     "stylelint-config-standard": "^30.0.1",
-    "stylelint-order": "^6.0.3"
+    "stylelint-order": "^6.0.3",
+    "vitest": "^0.29.2"
   }
 }
