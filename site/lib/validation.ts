@@ -8,7 +8,7 @@ const JipPreambleSchema = z.object({
   jip: z.coerce.number(),
   title: z.string(),
   authors: z.string(),
-  owners: z.optional(z.string()),
+  owners: z.string(),
   type: z.union([z.literal("Community"), z.literal("Council")]),
   category: z.union([
     z.literal("Hard-fork"),
@@ -41,5 +41,9 @@ const JipPreambleSchema = z.object({
 export type JipPreamble = z.infer<typeof JipPreambleSchema>;
 
 export const validatePreamble = (unvalidatedPreamble: { [key: string]: any }): JipPreamble => {
+  if (!unvalidatedPreamble.owners && unvalidatedPreamble.authors) {
+    unvalidatedPreamble.owners = unvalidatedPreamble.authors;
+  }
+
   return JipPreambleSchema.parse(unvalidatedPreamble);
 };

@@ -5,19 +5,20 @@ import { parseISO, format } from "date-fns";
 import { GetStaticProps } from "next";
 
 import { BaseJipData, getAllJipsPreambleData, JipId } from "@/lib/jips";
-import { getAuthorsFromPreamble } from "@/lib/joystream";
+import { getOwnersFromPreamble, PIONEER_MEMBER_LINK } from "@/lib/joystream";
 
 import styles from "@/styles/index.module.css";
+import React from "react";
 
 export const getStaticProps: GetStaticProps = async () => {
   const jipsPreambleData = getAllJipsPreambleData();
 
-  const authors = await getAuthorsFromPreamble(jipsPreambleData[0].preamble);
+  const owners = await getOwnersFromPreamble(jipsPreambleData[0].preamble);
 
   const props = JSON.parse(
     JSON.stringify({
       jipsPreambleData,
-      authors
+      owners
     })
   );
 
@@ -29,30 +30,39 @@ const JipItem = ({
   title,
   date,
   stage,
-  authors
+  owners
 }: {
   jipId: JipId;
   title: string;
   date: string;
   stage: string;
-  authors: string[];
+  owners: Array<[number, string]>;
 }) => (
   <div className={styles.jip}>
     <Link className={styles.jipTitle} href={`/${jipId}`}>
       {jipId}: {title}
     </Link>
-    <time className={styles.date} dateTime={date}>
-      {format(parseISO(date), "LLLL d, yyyy")} ~ Stage: {stage} ~ Authors: {authors.join(", ")}
-    </time>
+    <div className={styles.info}>
+      <time dateTime={date}>{format(parseISO(date), "LLLL d, yyyy")} </time> ~ Stage: {stage} ~
+      Owners:{" "}
+      {owners.map<React.ReactNode>(([joystreamId, handle], index) => (
+        <React.Fragment key={joystreamId}>
+          {index > 0 ? ", " : null}
+          <a href={PIONEER_MEMBER_LINK(`${joystreamId}`)} target="_blank">
+            {handle}
+          </a>
+        </React.Fragment>
+      ))}
+    </div>
   </div>
 );
 
 export default function Home({
   jipsPreambleData,
-  authors
+  owners
 }: {
   jipsPreambleData: Array<BaseJipData>;
-  authors: string[];
+  owners: Array<[number, string]>;
 }) {
   return (
     <Layout>
@@ -73,7 +83,7 @@ export default function Home({
               date={date}
               title={title}
               stage={stage}
-              authors={authors}
+              owners={owners}
             />
           ))}
         </div>

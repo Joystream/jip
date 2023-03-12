@@ -58,8 +58,6 @@ export const createTOCFromHTML = (html: string) => {
     }
   }
 
-  console.log(JSON.stringify(toc, null, 2));
-
   return toc;
 };
 

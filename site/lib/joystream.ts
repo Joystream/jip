@@ -8,17 +8,24 @@ const JOYSTREAM_FORUM_CATEGORY_REGEX = /\[!forum_category\]\(([0-9]+)\)/g;
 const JOYSTREAM_FORUM_THREAD__REGEX = /\[!forum_thread\]\(([0-9]+)\)/g;
 const JOYSTREAM_FORUM_THREAD_POST_REGEX = /\[!forum_post\]\(([0-9]+),([0-9]+),([0-9]+)\)/g;
 
-const PIONEER_PROPOSAL_LINK = (proposalId: string) =>
+export const PIONEER_PROPOSAL_LINK = (proposalId: string) =>
   `https://pioneerapp.xyz/#/proposals/preview/${proposalId}`;
-const PIONEER_PROPOSAL_DISCUSSION_LINK = (proposalId: string, post: string, revision?: string) =>
-  `https://pioneerapp.xyz/#/proposals/preview/${proposalId}?post=${post}`;
-const PIONEER_FORUM_CATEGORY_LINK = (categoryId: string) =>
+export const PIONEER_PROPOSAL_DISCUSSION_LINK = (
+  proposalId: string,
+  post: string,
+  revision?: string
+) => `https://pioneerapp.xyz/#/proposals/preview/${proposalId}?post=${post}`;
+export const PIONEER_FORUM_CATEGORY_LINK = (categoryId: string) =>
   `https://pioneerapp.xyz/#/forum/category/${categoryId}`;
-const PIONEER_FORUM_THREAD_LINK = (threadId: string) =>
+export const PIONEER_FORUM_THREAD_LINK = (threadId: string) =>
   `https://pioneerapp.xyz/#/forum/thread/${threadId}`;
-const PIONEER_FORUM_THREAD_POST_LINK = (threadId: string, postId: string, revision?: string) =>
-  `https://pioneerapp.xyz/#/forum/thread/${threadId}?post=${postId}`;
-const PIONEER_MEMBER_LINK = (memberId: string) => `https://pioneerapp.xyz/#/members/${memberId}`;
+export const PIONEER_FORUM_THREAD_POST_LINK = (
+  threadId: string,
+  postId: string,
+  revision?: string
+) => `https://pioneerapp.xyz/#/forum/thread/${threadId}?post=${postId}`;
+export const PIONEER_MEMBER_LINK = (memberId: string) =>
+  `https://pioneerapp.xyz/#/members/${memberId}`;
 
 const MARKDOWN_LINK_STRING = (link: string, content: string) => `[${content}](${link})`;
 
@@ -55,7 +62,7 @@ export const getUserIdFromUsersString = (usersInput: string) => {
 };
 
 export const fetchUserHandlesWithIds = async (joystreamIds: number[]) => {
-  const memberHandles: Array<string> = [];
+  const memberHandles: Array<[number, string]> = [];
 
   const res = await fetch(QUERY_URL, {
     method: "POST",
@@ -67,13 +74,13 @@ export const fetchUserHandlesWithIds = async (joystreamIds: number[]) => {
 
   const { data } = (await res.json()) as { data: MemberQueryResult };
 
-  return Object.values(data).map(([{ handle }]) => handle);
+  return joystreamIds.map(joystreamId => [joystreamId, data[`member${joystreamId}`][0].handle]);
 };
 
-export const getAuthorsFromPreamble = async (preamble: JipPreamble) => {
-  const userIds = getUserIdFromUsersString(preamble.authors);
+export const getOwnersFromPreamble = async (preamble: JipPreamble) => {
+  const userIds = getUserIdFromUsersString(preamble.owners);
 
-  const userHandles = await fetchUserHandlesWithIds(userIds);
+  const userHandles = (await fetchUserHandlesWithIds(userIds)) as Array<[number, string]>;
 
   return userHandles;
 };
