@@ -1,6 +1,7 @@
 :root {
-  --max-width-lg: 1200px;
-  --max-width-md: 800px;
+  --page-padding: 20px;
+  --content-width-lg: 1240px;
+  --content-width-md: 840px;
 
   /* colors */
   --color-grey: #dee3e9;

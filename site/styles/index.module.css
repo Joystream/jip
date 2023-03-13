@@ -2,8 +2,9 @@
   display: flex;
   align-items: center;
   flex-direction: column;
-  max-width: var(--max-width-lg);
+  max-width: var(--content-width-lg);
   margin: 0 auto;
+  padding: 0 var(--page-padding);
 }
 
 .jips {

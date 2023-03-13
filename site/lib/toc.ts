@@ -1,12 +1,14 @@
 const TOC_HEADINGS_REGEX = /<h[1-3]>.*<\/h[1-3]>/g;
 const ALL_HEADINGS_REGEX = /<h[1-6]>.*<\/h[1-6]>/g;
+const ANY_HTML_TAG_REGEX = /<\/?[^>]+(>|$)/g;
 
 const generateContentAndLinkFromHeading = (heading: string) => {
   const content = heading.substring(4, heading.length - 5);
+  const contentWithRemovedHTML = content.replace(ANY_HTML_TAG_REGEX, "");
 
   return {
-    content,
-    link: content.toLowerCase().replace(/ /g, "-")
+    content: contentWithRemovedHTML,
+    link: contentWithRemovedHTML.toLowerCase().replace(/ /g, "-")
   };
 };
 

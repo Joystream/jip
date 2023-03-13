@@ -3,6 +3,8 @@
   align-items: center;
   justify-content: center;
   height: 80px;
+  padding: 0 var(--page-padding);
+  text-align: center;
   border-bottom: 1px solid var(--color-grey);
 }
 

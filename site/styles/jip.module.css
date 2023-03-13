@@ -2,9 +2,9 @@
   display: flex;
   align-items: center;
   flex-direction: column;
-  max-width: var(--max-width-md);
+  max-width: var(--content-width-md);
   margin: 0 auto;
-  padding-top: 32px;
+  padding: 32px var(--page-padding) 0 var(--page-padding);
 }
 
 .header {
