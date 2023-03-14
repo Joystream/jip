@@ -6,6 +6,7 @@ import { createTOCFromHTML, integrateTOCLinksIntoHtml, TOCItems } from "./toc";
 import { parsePreamble } from "./preamble";
 import { integrateJoystreamLinksIntoMarkdown } from "./joystream";
 import { JipPreamble } from "./validation";
+import remarkGfm from "remark-gfm";
 
 export const JIP_FOLDER_IDENTIFIER = "jip-";
 export type JipId = `${typeof JIP_FOLDER_IDENTIFIER}${number}`;
@@ -37,6 +38,7 @@ const getJipData = async (jipId: JipId) => {
   const contentHtml = (
     await remark()
       .use(html, { sanitize: true })
+      .use(remarkGfm)
       .process(integrateJoystreamLinksIntoMarkdown(content))
   ).toString();
 

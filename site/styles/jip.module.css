@@ -4,7 +4,7 @@
   flex-direction: column;
   max-width: var(--content-width-md);
   margin: 0 auto;
-  padding: 32px var(--page-padding) 0 var(--page-padding);
+  padding: 32px var(--page-padding);
 }
 
 .header {
@@ -77,6 +77,11 @@
   color: var(--color-blue-ribbon);
 }
 
+.content table a {
+  font-size: 14px;
+}
+
+
 .content a:hover, .toc a:hover {
   text-decoration: underline;
 }
@@ -91,4 +96,40 @@
 
 .content li, .toc li {
   margin: 6px 0 6px 32px;
+}
+
+.content table {
+  width: 100%;
+  margin-top: 16px;
+  border-collapse: collapse;
+  outline: 1px solid rgb(0 0 0 / 50%);
+}
+
+.content thead {
+  background-color: rgb(0 0 0 / 75%);
+}
+
+.content tr:nth-child(even) {
+  background-color: rgb(0 0 0 / 10%);
+}
+
+.content th, .content td {
+  padding: 12px 8px;
+  text-align: center;
+}
+
+.content th {
+  width: 15.5%;
+  font-family: var(--font-primary);
+  font-weight: 700;
+  color: #1f252e;
+  color: white;
+}
+
+.content th:last-child {
+  width: 22.5%;
+}
+
+.content td {
+  font-family: var(--font-secondary);
 }
