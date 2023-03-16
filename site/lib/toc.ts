@@ -2,13 +2,29 @@ const TOC_HEADINGS_REGEX = /<h[1-3]>.*<\/h[1-3]>/g;
 const ALL_HEADINGS_REGEX = /<h[1-6]>.*<\/h[1-6]>/g;
 const ANY_HTML_TAG_REGEX = /<\/?[^>]+(>|$)/g;
 
-const generateContentAndLinkFromHeading = (heading: string) => {
-  const content = heading.substring(4, heading.length - 5);
-  const contentWithRemovedHTML = content.replace(ANY_HTML_TAG_REGEX, "");
+const generateLinkValue = (baseLinkValue: string, counter: number) => {
+  if (counter === 0) return baseLinkValue;
+
+  return `${baseLinkValue}-${counter}`;
+};
+
+const generateContentAndLinkFromHeading = (heading: string, linkValueTracker: Array<string>) => {
+  let counter = 0;
+  const content = heading.substring(4, heading.length - 5).replace(ANY_HTML_TAG_REGEX, "");
+  const baseLinkValue = content.toLowerCase().replace(/ /g, "-");
+
+  while (
+    linkValueTracker.find(linkValue => linkValue === generateLinkValue(baseLinkValue, counter))
+  ) {
+    counter++;
+  }
+
+  const link = generateLinkValue(baseLinkValue, counter);
+  linkValueTracker.push(link);
 
   return {
-    content: contentWithRemovedHTML,
-    link: contentWithRemovedHTML.toLowerCase().replace(/ /g, "-")
+    content,
+    link
   };
 };
 
@@ -26,8 +42,9 @@ export const createTOCFromHTML = (html: string) => {
 
   let lastH1 = "";
   let lastH2 = "";
+  let usedLinkValues: Array<string> = [];
   for (let mainHeading of mainHeadings) {
-    const { content, link } = generateContentAndLinkFromHeading(mainHeading);
+    const { content, link } = generateContentAndLinkFromHeading(mainHeading, usedLinkValues);
 
     if (mainHeading[2] == "1") {
       toc.push({
@@ -38,25 +55,22 @@ export const createTOCFromHTML = (html: string) => {
       lastH1 = link;
     }
 
-    if (mainHeading[2] == "2") {
-      toc
-        .find(h1 => h1.link == lastH1)
-        ?.children.push({
-          children: [],
-          content,
-          link
-        });
+    const h1Items = toc.find(h1 => h1.link === lastH1);
+    if (mainHeading[2] == "2" && h1Items) {
+      h1Items.children.push({
+        children: [],
+        content,
+        link
+      });
       lastH2 = link;
     }
 
-    if (mainHeading[2] == "3") {
-      toc
-        .find(h1 => h1.link == lastH1)
-        ?.children.find(h2 => h2.link == lastH2)
-        ?.children.push({
-          content,
-          link
-        });
+    const h2Items = h1Items?.children.find(h2 => h2.link === lastH2);
+    if (mainHeading[2] == "3" && h2Items) {
+      h2Items.children.push({
+        content,
+        link
+      });
     }
   }
 
@@ -64,8 +78,10 @@ export const createTOCFromHTML = (html: string) => {
 };
 
 export const integrateTOCLinksIntoHtml = (html: string) => {
+  let usedLinkValues: Array<string> = [];
+
   return html.replace(ALL_HEADINGS_REGEX, match => {
-    const { link } = generateContentAndLinkFromHeading(match);
+    const { link } = generateContentAndLinkFromHeading(match, usedLinkValues);
 
     return match.substring(0, 3) + ` id="${link}"` + match.substring(3);
   });
