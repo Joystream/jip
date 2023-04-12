@@ -4,8 +4,8 @@ import { GetStaticProps, GetStaticPaths } from "next";
 import { parseISO, format } from "date-fns";
 import { ParsedUrlQuery } from "querystring";
 import Link from "next/link";
-
-import { getAllJipIDs, getJipData, JipData, JipId } from "@/lib/jips";
+import { JipId }from "@/lib/files";
+import { getAllJipIDs, getJipData, JipData } from "@/lib/jips";
 
 import styles from "@/styles/jip.module.css";
 import { BaseTocItem } from "@/lib/toc";

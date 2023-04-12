@@ -12,7 +12,7 @@
     "lint:all": "yarn lint; yarn stylelint",
     "test": "vitest run",
     "checks:all": "yarn lint:all; yarn test",
-    "validate": "yarn ts-node scripts/validation.ts"
+    "validate": "ts-node scripts/validation.ts"
   },
   "dependencies": {
     "@types/node": "18.14.6",
