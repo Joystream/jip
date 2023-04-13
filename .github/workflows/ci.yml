@@ -1,0 +1,23 @@
+name: Continuous Integration
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - ready_for_review
+      - edited
+
+jobs:
+  verify:
+    name: Verify jips
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Verify jips
+        run: |
+          cd site
+          yarn
+          yarn validate
