@@ -4,8 +4,9 @@ import Link from "next/link";
 import { parseISO, format } from "date-fns";
 import { GetStaticProps } from "next";
 
-import { BaseJipData, getAllJipsPreambleData, JipId } from "@/lib/jips";
+import { BaseJipData, getAllJipsPreambleData } from "@/lib/jips";
 import { getOwnersFromPreamble, PIONEER_MEMBER_LINK } from "@/lib/joystream";
+import { JipId } from "@/lib/files";
 
 import styles from "@/styles/index.module.css";
 import React from "react";
