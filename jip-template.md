@@ -1,9 +1,9 @@
 <pre>
-title: 
-authors: 
-type: 
-category: 
-description: 
+title:
+authors:
+type:
+category:
+description:
 </pre>
 
 # Abstract
@@ -51,8 +51,3 @@ This document is in the public domain.
 Please cite this document as:
 
 `TODO`
-
-# Changelog
-
-| Date | Author | Role | Description | Link | Maintenance Edit |
-|:-----|:-------|:-----|:------------|:----:|:----------------:|

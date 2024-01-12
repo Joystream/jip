@@ -39,7 +39,7 @@ The persons working on driving the proposal forward, which may or may not be the
 
 ### Editors
 
-The persons tasked with supporting authors and owners in understanding and navigating the process successfully while protecting the integrity of the process. They play no role in judging or deciding on the merits of a proposal beyond the specific requirements of the process constraints. The support should come in the support of offering advise, introductions and information relevant to making the proposal properly reviewed and enhanced through feedback. A given JIP proposal does not have a specific formally recognized editor assigned, instead any editor can step in and act in this capacity for any proposal at any time. There should at all times be an identified set of Joystream members, selected by the council, who serve the role of _editors_ in the JIP process. These editors must maintain up to date and accurate contact information in their membership profile on-chain. In cases where editors disagree about specific procedural questions, for example about a proposal, the council must be called to adjudicate through a signal proposal.
+The persons tasked with supporting authors and owners in understanding and navigating the process successfully while protecting the integrity of the process. They play no role in judging or deciding on the merits of a proposal beyond the specific requirements of the process constraints. The support should come in the support of offering advise, introductions and information relevant to making the proposal properly reviewed and enhanced through feedback. A given JIP proposal does not have a specific formally recognized editor assigned, instead any editor can step in and act in this capacity for any proposal at any time. There should at all times be an identified set of Joystream members, selected by the council, who serve the role of editors in the JIP process. Editors never directly contribute to the authorship of any part of the JIP document, they simply gate merging of changes, but they can request explicit changes to be made that are required as part of the JIP process, such as updating the stage field for example. Editors must maintain up to date and accurate contact information in their membership profile on-chain. In cases where editors disagree about specific procedural questions, for example about a proposal, the council must be called to adjudicate through a signal proposal.
 
 ### Identification
 
@@ -91,6 +91,8 @@ A maintenance edit refers to one among a very narrow set of revisions which can 
 2. Correcting process mistakes, so any mistake w.r.t. how the JIP process at the time indicated the document should have been managed.
 3. Updating structure or content to reflect some new version of the JIP process document standard itself.
 
+Recall that such edits are not made by editors, as editors, they are made by authors.
+
 ### Repository
 
 The public workspace for JIPs is the canonical Git forge, identified by the most recent JIP parameter signal to that effect. The JIP editors will have write access to this repository, and they are also identified by the most recent JIP parameter signal to that effect. The repository must follow these rules
@@ -105,26 +107,25 @@ The public workspace for JIPs is the canonical Git forge, identified by the most
    - `jip-template.md`: A template Markdown document to be used when creating new JIPs.
    - `/jip-[JIP number]/`: A dedicated folder for each created JIP, where `JIP-number` is the number of the JIP. Within this folder the only constraint is that the primary Markdown document must have name `jip.md`.
 
-### Changelog
-
-All updates to any part of the document after it enters `Review` stage must be logged in this section of the JIP document, perpetually. This information must be organized into a table with columns
-
-1. date: ISO 8601
-2. author: member id member
-3. rol: so `owner` or `editor`
-4. description: one liner
-5. link: link to forum post about change
-6. maintenance: `yes` or `no`, so whether this change was a maintenance edit.
-
-The table is populated with one row per commit that changes any part of the corresponding JIP document on the `master` branch. 
-
 ### On-chain Proposals
 
 The council is involved passing three types of on-chain proposals as part of the JIP process
 
-1. **JIP Process Parameter Update:** A proposal where the council updates _all_ public parameter values that are critical for the process.
-2. **JIP Enactment:** A proposal that enacts a council JIP proposal, for example a runtime upgrade, or changing the upper bound on the size of the validator set.
-3. **JIP Proposal Stage Transitions:** A signal proposal for a subset of stage transitions in the life-cycle of a proposal, such as when it first enters `Review`.
+#### Process Parameter Update Proposal
+
+A signal proposal where the council updates _all_ public parameter values that are critical for the process.
+
+#### Enactment Proposal
+
+A proposal that enacts a council JIP proposal, for example a runtime upgrade, or changing the upper bound on the size of the validator set. Once such proposals pass, the `proposals` field of the document must be updated.
+
+#### Stage Transitions Proposal
+
+A signal proposal for a subset of stage transitions in the life-cycle of a proposal that are deemed sufficiently critical that they must be approved by the council, for extra visibility and accountability around the process being followed, but not merit of the proposal. The owners must not create such a proposal, and such a proposal must be rejected by the council. Only the editor creates such proposals. All such proposals must in their rationale include
+ - The Git commit hash holding the full text version of the most recent merged JIP document.
+ - A description of which stage to transition to, and why this is appropriate.
+
+Once such proposals pass, the `proposals` field of the document must be updated.
 
 ### Document
 
@@ -142,7 +143,7 @@ The document must satisfy the following constraints.
    - Git forge (e.g. Github) HTTP URL with git commit hash.
    - IPFS gateway HTTP URL with content identifier.
    - [Joystream On-Chain Links](#joystream-on-chain-links).
-6. References to other JIPs should follow the format JIP-N where N is the JIP number you are referring to. Each EIP that is referenced in an JIP MUST be accompanied by a relative markdown link the first time it is referenced, and MAY be accompanied by a link on subsequent references. 
+6. References to other JIPs should follow the format JIP-N where N is the JIP number you are referring to. Each EIP that is referenced in an JIP MUST be accompanied by a relative markdown link the first time it is referenced, and MAY be accompanied by a link on subsequent references.
 7. Auxiliary files for the N'th JIP should live in the dedicated folder for that JIP, and the maximum total size of all assets in such a folder is 100 MB.
 8. Must not include the word "standard", or any variation thereof, or the JIP's number, in the title or description fields of the preamble.
 9. Follow the structure described in the [Structure](#structure).
@@ -160,16 +161,16 @@ Linking to on-chain resources uses a special format makes it easy to describe th
 
 #### Structure
 
-Here the structure of the document is described. 
+Here the structure of the document is described.
 
-- **Preamble:** A RFC 822 style header preamble, preceded and followed by three hyphens (`---`). The headers must appear in the stated order. Headers requiring dates will always do so in the format of ISO 8601 (yyyy-mm-dd). Headers that permit lists must separate elements with commas. Editors should only ever directly make changes to this part of the document.
+- **Preamble:** A RFC 822 style header preamble, preceded and followed by three hyphens (`---`). The headers must appear in the stated order. Headers requiring dates will always do so in the format of ISO 8601 (yyyy-mm-dd). Headers that permit lists must separate elements with commas.
     - `jip`: JIP number, which must be unique across all JIPs to ever pass `Idea` stage.
     - `title`: A few short words describing the proposal.
     - `authors`: A list of authors of the proposal.
     - `owners` (optional): Persons currently owning proposal, if the set of authors is identical as owners, this header can be omitted.
     - `type`: One of `Community` or `Council`.
     - `category` (optional): One of `Hard-fork`, `Recovery`, `Meta`, `Informational` or `Standard`. Must be present if and only if type is `Community`.
-    - `domains` (optional): A list of distinct domains, all taken from the list of domains signalled by the council through the most recent proposal parameter update. Must be present if and only if type is `Council`. 
+    - `domains` (optional): A list of distinct domains, all taken from the list of domains signalled by the council through the most recent proposal parameter update. Must be present if and only if type is `Council`.
     - `description`: One full short sentence describing the new standard.
     - `forum-thread`: Link to on-chain forum thread for discussing proposal.
     - `stage`: One of `Draft`, `Review`, `Living`, `Stagnant`, `Last Call`, `Withdrawn`, `Enactable`, `Final`, `Rejected`, `Enacted`.
@@ -183,12 +184,11 @@ Here the structure of the document is described.
 - **Specification:** A neutral, precise and clear description of a particular solution. It should be clear and detailed enough to allow independent third parties to implement or instantiate purely based on this text and associated materials.
 - **Rationale:** The rationale fleshes out the specification by describing what motivated the design and why particular design decisions were made. It should describe alternate designs that were considered and related work.
 - **Backwards Compatibility (optional):** If this standard introduce some backwards incompatibility, in the sense that third parties will have to change their software in order to retain interoperability for their existing purposes, then this must be clearly identified and described.
-- **Test Cases (optional):** Test cases for any third party whishing to make an implementation of the change. Should either be inlined in the JIP as data (such as input/expected output pairs, or as auxillary asset). 
-- **Reference Implementation (optional):** Reference/example implementation that people can use to assist in understanding or implementing this specification. 
+- **Test Cases (optional):** Test cases for any third party whishing to make an implementation of the change. Should either be inlined in the JIP as data (such as input/expected output pairs, or as auxillary asset).
+- **Reference Implementation (optional):** Reference/example implementation that people can use to assist in understanding or implementing this specification.
 - **Security Considerations (optional):** Discussion of the security implications/considerations relevant to the proposed change. Include information that might be important for security discussions, surfaces risks and can be used throughout the life-cycle of the proposal. E.g. include security-relevant design decisions, concerns, important discussions, implementation-specific guidance and pitfalls, an outline of threats and risks and how they are being addressed.
 - **Copyright:** Copyright Waiver - All JIPs must be in the public domain. The copyright waiver MUST link to the license file and use the following wording: `Copyright and related rights waived via [CC0](/LICENSE).`
 - **Citation:** Describes citation format for this document.
-- **Changelog:** A log of changes to the document, read more [here](#changelog)
 
 ## Process
 
@@ -198,7 +198,7 @@ The following describes the JIP process in terms of the life-cycle of an individ
 
 ### `Idea`
 
-The purpose of this stage is allow the authors to obtain initial informal feedback on the problem they are tackling, before investing any substantial effort, so as to conduct a quick sanity check on feasibility, alternatives and prospects for support. Ideally this would be before having spent much time writing anything concrete, like the JIP document or any implementation. Appropriate points of feedback would for example be 
+The purpose of this stage is allow the authors to obtain initial informal feedback on the problem they are tackling, before investing any substantial effort, so as to conduct a quick sanity check on feasibility, alternatives and prospects for support. Ideally this would be before having spent much time writing anything concrete, like the JIP document or any implementation. Appropriate points of feedback would for example be
 
 - editors
 - domain authorities
@@ -207,25 +207,28 @@ The purpose of this stage is allow the authors to obtain initial informal feedba
 - infrastructure operators
 - app operators
 
-It may be fine to open up an early forum thread for idea stage discussion, but be aware that this will not be the ultimate discussion venue if the proposal progresses. If the authors determine that they will initiate a proposal, then they have to prepare a first complete draft of their JIP document and open a pull request, and alert the editors. Anyone can open the request, author authentication is not needed on Github, this happens later. The document must 
+It may be fine to open up an early forum thread for idea stage discussion, but be aware that this will not be the ultimate discussion venue if the proposal progresses. If the authors determine that they will initiate a proposal, then they have to prepare a first complete draft of their JIP document and open a pull request, and alert the editors. Anyone can open the request, owner authentication is not needed on Github, this happens later. The document must
 
-- be in `draft` stage when the request is opened.
+- be in `Draft` stage when the request is opened.
 - have type properly set: council vs community. This value cannot be changed later, and so a new JIP must be created if this turns out to be wrong.
+
+When the request has been opened under such circumstances, the proposal is in `Draft` stage.
 
 ### `Draft`
 
-The purpose of this stage is to prepare the proposal for public review by making sure it complies with the JIP document requirements. Once an editor is satisfied with the JIP document and pull request, they must open a signal proposal to this effect, and the rationale of this proposal must refer to
+The purpose of this stage is to prepare the proposal for public review by making sure it complies with the JIP document requirements. Once an editor is satisfied with the JIP document and pull request, they must open a signal proposal to this effect, and the rationale of this proposal must also include
 
-1. That the purpose is to advance a proposal to `draft` stage.
-2. The full text version of the JIP document, with a commit hash.
-3. The proposed JIP number, which must be unique across all JIPs to ever pass `Idea` stage.
-4. Appropriate domains have been set for a council proposal.
+1. The proposed JIP number, which must be unique across all JIPs to ever pass `Idea` stage.
+2. Appropriate domains have been set for a council proposal.
+3. A proposed dedicated discussion thread in the JIP forum category.
 
-**The author must not do this, and such a proposal must be rejected by the council**. If the proposal fails, it can be a new one can be reopened again at any time. All authors listed in the document must submit a confirmatory message in the proposal discussion thread using their proposal memberships, attesting to the authenticity of their claimed involvement as authors. Only after this has occurred should any council member approve such a proposal. If during deliberation, changes are made prior to proposal passing, then this should be added to the discussion log of the proposal by the editor only. Once the proposal is approved, the pull request can be merged with the updated JIP number and a reference to the now created discussion thread in the appropriate forum category.
+If the proposal fails, it can be a new one can be reopened again at any time. All authors listed in the document must submit a confirmatory message in the proposal discussion thread using their proposal memberships, attesting to the authenticity of their claimed involvement as authors. Only after this has occurred should any council member approve such a proposal. If during deliberation, changes are made prior to proposal passing, then this should be added to the discussion log of the proposal by the editor only. Once the proposal is approved, the pull request can be merged with the updated JIP number and a reference to the now created discussion thread in the appropriate forum category. At this point the JIP has reached the `Review ` stage.
 
 ### `Review`
 
-The purpose of this stage is to allow open-ended discussion and deliberation around the merits of a proposal, possibly including further revisions to the content of the JIP document by the owners, in order to either clarify, revise or extend the proposal. When the editor determines that the process has been followed, in particular w.r.t. owners responding to all open questions and domains reflecting possibly updated scope of a council proposal, and that they are not intending to make additional changes to the proposal based on current or anticipated future feedback, the proposal should progress. If it is intended to be a `Living` proposal, i.e. it is expected that it will need to be updated in the future, this should be agreed between editors and owners, if not, it should go to the `Last Call` stage, both occur without any on-chain proposal. The field `last-call-deadline` must be set to some future date by which a transition to the next stage is expected. This should be 14 days into the future.
+The purpose of this stage is to allow open-ended discussion and deliberation around the merits of a proposal, possibly including further revisions to the content of the JIP document by the owners, in order to either clarify, revise or extend the proposal. When the editor determines that the process has been followed, in particular w.r.t. owners responding to all open questions and domains reflecting possibly updated scope of a council proposal, and that they are not intending to make additional changes to the proposal based on current or anticipated future feedback, the proposal should progress. If it is intended to be a `Living` proposal, i.e. it is expected that it will need to be updated in the future, this should be agreed between editors and owners. If not, it should go to the `Last Call` stage, both occur without any on-chain proposal. The field `last-call-deadline` must be set to some future date by which a transition to the next stage is expected. This should be 14 days into the future.
+
+The proposal progresses to the next stage when an owner updates the `stage` field and an editor merges this change.
 
 ### `Last Call`
 
@@ -245,7 +248,7 @@ For council proposals, domain authorities for each domain in the proposal provid
 
 Once the last call deadline has expired and at last one domain authority has signed off for each domain listed in the proposal, then the editor must advance the proposal to stage `Enactable`. At this point the editor must open the enactment proposal for putting the JIP proposal into effect. The specific on-chain proposal type, parameters and rationale text, is already specified in the proposal. The editor must also in the rationale reference the forum posts of opinion statements submitted by domain authorities for domains in the proposal.
 
-### `Enactable` 
+### `Enactable`
 
 The purpose of this stage is to wait for the resolution of the enactment proposal by the current council. If the on-chain proposal is not executed, for any reason, then the JIP proposal must have it's stage set to `Rejected`, otherwise it should have it's stage set to `Enacted`.
 
@@ -283,7 +286,7 @@ During `Draft`, `Review`, `Last Call` and `Living` stages, the ownership set can
 - some explanation as to the cause and timing of the change.
 - a link to an open pull request where the owner field of the JIP document is updated.
 
-After the proposal has been created, all impacted owners must submit a statement in the proposal discussion thread which confirms that they intend to either no longer be, or now become, an owner. The council must not pass the proposal if 
+After the proposal has been created, all impacted owners must submit a statement in the proposal discussion thread which confirms that they intend to either no longer be, or now become, an owner. The council must not pass the proposal if
 
 - there is no net change in owners, or
 - at least one owner listed for removal has not confirmed this, or
@@ -291,17 +294,17 @@ After the proposal has been created, all impacted owners must submit a statement
 
 Once the on-chain proposal has been executed, the editor can merge the pull request.
 
-#### Stage Transitions and Revisions Merged
+#### Stage Transition
 
-For all stage transitions, this must be updated in JIP document by the editor, and the editor only. The editor can merge revisions only to the header, but at any stage, as long a they are appropriate for the stage. Whenever revisions are merged which alter a JIP document, for this or any other reason, then the discussion thread must be notified by the editor, and the editor only, about the nature of the merge, which must include
+On any stage transition, after `Draft` stage has been entered, the forum thread should notified by the editor.
+
+#### Document Revisions
+
+In stages `Draft`, `Review`, `Last Call` and `Living`, revisions can be merged to the document by the owner(s). Whenever revisions are merged which alter a JIP document, the forum discussion thread must be notified by the editor, and the editor only, about the nature of the merge. This notification post must include
 
 - a one line description of the purpose of the revision
 - who has authored the revisions
 - new commit hash for repository
-- git log of new commits introduced which alter the JIP document
-
-Any such revisions must also be reflected in the changelog.
-This is obviously only feasible only after the transition to `Review` from `Draft`, when the discussion thread is created. While the authors provide the initial draft, revisions including their contributions can only occur in stages `Draft`, `Review`, `Last Call` and `Living` after this, and these can only affect the body section of the JIP document, or auxillary assets, not the header. The authors should always try to batch together logically coherent sets of changes in order to not generate too much noise in the thread.
 
 #### Stagnation
 
@@ -339,7 +342,7 @@ JIPs are encouraged to follow RFC 2119 and RFC 8174 for terminology and to inser
 
 # Rationale
 
-Joystream Improvement Proposal (JIP) process, or JIP process for short, is heavily inspired by the Bitcoin Improvement Proposal ([BIP](https://github.com/bitcoin/bips)) and Ethereum Improvement Proposal ([EIP](https://eips.ethereum.org/)) processes. The JIP process attempts to improve upon these earlier approaches by taking advantage of the inherent governance, [binding upgrades](https://docs.substrate.io/build/upgrade-the-runtime/), accountability and publishing capabilities of the Joystream blockchain and DAO. The aspiration is that this will help generated greater transparency and legitimacy for how changes are made, contributing to the pace of innovation and preservation of network effect by avoiding some of the prior challenges around [highly subjective rules](https://github.com/bitcoin/bips/blob/master/bip-0002.mediawiki#rationale), [arbitrary](https://eips.ethereum.org/EIPS/eip-1#eip-editors) [authorities](https://github.com/bitcoin/bips/blob/master/bip-0001.mediawiki#bip-editors) and [arbitrary venues](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-1.md#core-eips). This document has in multiple places been copied from the guideline documents of those processes. 
+Joystream Improvement Proposal (JIP) process, or JIP process for short, is heavily inspired by the Bitcoin Improvement Proposal ([BIP](https://github.com/bitcoin/bips)) and Ethereum Improvement Proposal ([EIP](https://eips.ethereum.org/)) processes. The JIP process attempts to improve upon these earlier approaches by taking advantage of the inherent governance, [binding upgrades](https://docs.substrate.io/build/upgrade-the-runtime/), accountability and publishing capabilities of the Joystream blockchain and DAO. The aspiration is that this will help generated greater transparency and legitimacy for how changes are made, contributing to the pace of innovation and preservation of network effect by avoiding some of the prior challenges around [highly subjective rules](https://github.com/bitcoin/bips/blob/master/bip-0002.mediawiki#rationale), [arbitrary](https://eips.ethereum.org/EIPS/eip-1#eip-editors) [authorities](https://github.com/bitcoin/bips/blob/master/bip-0001.mediawiki#bip-editors) and [arbitrary venues](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-1.md#core-eips). This document has in multiple places been copied from the guideline documents of those processes.
 
 # Copyright
 
@@ -350,8 +353,3 @@ This document is in the public domain.
 Please cite this document as:
 
 Bedeho Mender, "JIP-1: The Joystream Improvement Proposal Process" Joystream Improvement Proposals, no. 1, February 2023.
-
-# Changelog
-
-| Date | Author | Role | Description | Link | Maintenance Edit |
-|:-----|:-------|:-----|:------------|:----:|:----------------:|
